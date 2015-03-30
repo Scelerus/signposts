@@ -1,5 +1,5 @@
 all:
-	ocamlopt -o lsp *.ml
+	ocamlopt -o lsp str.cmxa *.ml
 
 clean:
 	rm lsp
