@@ -1,7 +1,16 @@
 let debug = ref true
 
+(* this next section contains all the parameters that can be set.
+   Most of these concern the heuristics being employed *)
+
 let signposts = [("cum","tum")]
 (* [("ut","sic"); ("et","et"); ("cum","tum"); ("velut", "sic")]*)
+
+let max_words_between_signposts = 8
+
+let fFullStops = true
+
+(* end of parameters *)
 
 (* for whatever reason ocaml doesn't support this natively, so I rolled my own *)
 let contains s1 s2 =
@@ -33,14 +42,18 @@ let main () =
 	  if List.length by_period = 2 then begin cur_letter := List.hd words end end;
 	let rec look_for_signposts words signposts =
 	  match signposts with [] -> () | (fst, snd) :: tl ->
-	    let rec look_through_words words fst snd which counter =
+	    let rec look_through_words words fst snd fLookingForFirst counter =
 	      match words with [] -> () | hd :: tl ->
-		if which then begin if hd = fst then (look_through_words tl fst snd false 0; look_through_words tl fst snd true 0) else look_through_words tl fst snd true 0 end else
-		  if hd = snd && counter < 8 
-		  then Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter 
-		  else (* check for full stops *)
-		    if contains hd "." || contains hd ":" then ()
-		    else look_through_words tl fst snd false (counter + 1)
+		if fLookingForFirst then 
+		  begin if hd = fst 
+		         then (look_through_words tl fst snd false 0; look_through_words tl fst snd true 0) 
+		         else look_through_words tl fst snd true 0 
+		  end else
+		    if hd = snd && counter < max_words_between_signposts 
+		    then Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter 
+		    else (* check for full stops *)
+		      if fFullStops && (contains hd "." || contains hd ":") then ()
+		      else look_through_words tl fst snd false (counter + 1)
 	    in
 	    look_through_words words fst snd true 0; look_for_signposts words tl
 	in
