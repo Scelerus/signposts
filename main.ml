@@ -22,6 +22,15 @@ let contains s1 s2 =
     with Not_found -> found := false);
     !found
 
+let rec remove_word_internal word rgwords acc =
+  match rgwords with [] -> acc 
+    | hd :: tl -> if hd = word 
+      then (List.rev acc)@tl 
+      else remove_word_internal word tl (hd :: acc)
+
+let remove_word word rgwords =
+  remove_word_internal word rgwords []
+
 let main () =
   let lines = ref [] in
   let filename = Sys.argv.(1) in
@@ -42,20 +51,20 @@ let main () =
 	  if List.length by_period = 2 then begin cur_letter := List.hd words end end;
 	let rec look_for_signposts words signposts =
 	  match signposts with [] -> () | (fst, snd) :: tl ->
-	    let rec look_through_words words fst snd fLookingForFirst counter =
-	      match words with [] -> () | hd :: tl ->
+	    let rec look_through_words words fst snd fLookingForFirst counter words_left =
+	      match words with [] -> [] | hd :: tl ->
 		if fLookingForFirst then 
 		  begin if hd = fst 
-		         then (look_through_words tl fst snd false 0; look_through_words tl fst snd true 0) 
-		         else look_through_words tl fst snd true 0 
+		         then begin let tl = look_through_words tl fst snd false 0 tl in look_through_words tl fst snd true 0 tl end 
+		         else look_through_words tl fst snd true 0 tl
 		  end else
 		    if hd = snd && counter < max_words_between_signposts 
-		    then Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter 
-		    else (* check for full stops *)
-		      if fFullStops && (contains hd "." || contains hd ":") then ()
-		      else look_through_words tl fst snd false (counter + 1)
+		    then begin Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter; remove_word hd words_left 
+		    end else (* check for full stops *)
+		      if fFullStops && (contains hd "." || contains hd ":") then words_left
+		      else look_through_words tl fst snd false (counter + 1) words_left
 	    in
-	    look_through_words words fst snd true 0; look_for_signposts words tl
+	    look_through_words words fst snd true 0 words; look_for_signposts words tl
 	in
 	look_for_signposts words signposts;  
 	process_lines tl
