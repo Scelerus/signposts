@@ -3,6 +3,16 @@ let debug = ref true
 let signposts = [("cum","tum")]
 (* [("ut","sic"); ("et","et"); ("cum","tum"); ("velut", "sic")]*)
 
+(* for whatever reason ocaml doesn't support this natively, so I rolled my own *)
+let contains s1 s2 =
+    let r2 = Str.regexp (Str.quote s2) in
+    let found = ref false in
+    (try
+      let _ = Str.search_forward r2 s1 0 in
+      found := true
+    with Not_found -> found := false);
+    !found
+
 let main () =
   let lines = ref [] in
   let filename = Sys.argv.(1) in
@@ -26,7 +36,11 @@ let main () =
 	    let rec look_through_words words fst snd which counter =
 	      match words with [] -> () | hd :: tl ->
 		if which then begin if hd = fst then (look_through_words tl fst snd false 0; look_through_words tl fst snd true 0) else look_through_words tl fst snd true 0 end else
-		  if hd = snd && counter < 8 then Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter else look_through_words tl fst snd false (counter + 1)
+		  if hd = snd && counter < 8 
+		  then Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter 
+		  else (* check for full stops *)
+		    if contains hd "." || contains hd ":" then ()
+		    else look_through_words tl fst snd false (counter + 1)
 	    in
 	    look_through_words words fst snd true 0; look_for_signposts words tl
 	in
