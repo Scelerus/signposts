@@ -3,7 +3,7 @@ let debug = ref true
 (* this next section contains all the parameters that can be set.
    Most of these concern the heuristics being employed *)
 
-let signposts = [("cum","tum")]
+let signposts = [("ut","sic")]
 (* [("ut","sic"); ("et","et"); ("cum","tum"); ("velut", "sic")]*)
 
 let max_words_between_signposts = 8
@@ -42,6 +42,15 @@ let main () =
   with _ -> begin if !debug then Printf.printf "lines read in: %d\n" (List.length !lines) end;
     lines := List.rev !lines;
     let cur_letter = ref "" in
+
+    let rec count_words lines =
+      match lines with [] -> 0 | hd :: tl ->
+	let words = List.map (String.lowercase) (Str.split (Str.regexp (Str.quote " ")) hd) in
+	(List.length words) + count_words tl
+    in
+
+    Printf.printf "%d words in %s\n" (count_words !lines) Sys.argv.(1);
+
     let rec process_lines lines =
       match lines with [] -> () | hd :: tl ->
 	(*Printf.printf "hd is %s\n" hd;*)
