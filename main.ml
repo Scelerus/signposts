@@ -45,7 +45,7 @@ let main () =
     let rec process_lines lines =
       match lines with [] -> () | hd :: tl ->
 	(*Printf.printf "hd is %s\n" hd;*)
-	let words = Str.split (Str.regexp (Str.quote " ")) hd in
+	let words = List.map (String.lowercase) (Str.split (Str.regexp (Str.quote " ")) hd) in
 	  if List.length words > 0 then begin
 	let by_period = Str.split (Str.regexp (Str.quote ".")) (List.hd words) in
 	  if List.length by_period = 2 then begin cur_letter := List.hd words end end;
@@ -58,11 +58,14 @@ let main () =
 		         then begin let tl = look_through_words tl fst snd false 0 tl in look_through_words tl fst snd true 0 tl end 
 		         else look_through_words tl fst snd true 0 tl
 		  end else
-		    if hd = snd && counter < max_words_between_signposts 
+		    if counter > max_words_between_signposts then words_left else begin
+
+		    if hd = snd 
 		    then begin Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter; remove_word hd words_left 
 		    end else (* check for full stops *)
 		      if fFullStops && (contains hd "." || contains hd ":") then words_left
 		      else look_through_words tl fst snd false (counter + 1) words_left
+		end
 	    in
 	    look_through_words words fst snd true 0 words; look_for_signposts words tl
 	in
