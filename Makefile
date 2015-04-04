@@ -1,3 +1,4 @@
+
 all:
 	ocamlopt -o lsp str.cmxa *.ml
 
@@ -7,3 +8,9 @@ clean:
 	rm *.cmx
 	rm *.o
 	rm *~
+
+pdf:
+	pdflatex main.tex
+	bibtex main.aux
+	pdflatex main.tex
+	pdflatex main.tex

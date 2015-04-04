@@ -1,0 +1,57 @@
+\section{Abstract}
+    
+
+\section{Introduction}
+
+The letters of Gauis Plinius Caecilius Secundus, more commonly known as Pliny the Younger, are often read by students of Latin.  It has been claimed \cite{Woodmanpm} that Pliny's letters are easier to read than comparable Latin texts due to Pliny favoring so called ``signpost'' words, which provide useful markers for the beginning reader. The primary goal of this paper is to determine whether this claim is, in fact, true.
+
+``Signpost'' words come in pairs: first one introduces some grammatical structure, such as a clause or phrase, then the other introduces another parallel structure. Common examples of this pattern include ``ut'' and ``sic'' - ``just as x, in the same way y'' or ``cum'' and ``tum'' - ``both x and y''. These words are often learned early in a student's Latin career, and, it is assumed, allow the student to break up the sentence into its constituent parts. This paper assumes that a higher frequency of ``signpost'' words does, in fact, lead to more easily read Latin for the beginner; however, this assumption may be false (see \ref{sec:Threats to Validity}).
+
+Nevertheless, this paper endeavors to determine whether Pliny's prose includes more of these ``signpost'' words than the prose of other similar authors. In order to discover this, a computer analysis of the texts of both Pliny's epistles and other Roman writers (including Cicero, Seneca, Caesar, and Tacitus) is used. This analysis searches through the text and finds pairs of coordinated ``signpost'' words. We discuss this analysis in Section 3.
+ 
+After data is collected, statistical methods are applied to determine whether the ``signpost'' words occur more or less frequently in different authors. The statistical methodology is discussed in Section 4. The results of the analysis are reported in Section 5 and discussed in Section 6. Section 7 discusses related work, Section 8 discusses threats to the validity of our approach, Section 9 discusses possible future work, and the paper concludes in Section 10.
+
+\section{The Program}
+
+In order to determine how many times each of the signposts we consider is used in the texts considered, we use a simple computer program that operates over the text in question. The algorithm is straightforward, but it does rely on two major heuristics and a few other small assumptions.
+
+\subsection{Description of Algorithm}
+
+The main part of the algorithm is the following: we start with a list of signpost pairs (for instance, ``cum'', ``tum'') and a file, which contains the text of the work we wish to collect data on. We read the file into our program and split it up by spaces so that we have a large list of all the words in the file. For each of the signposts we are considering, we make one pass through the word list. We begin reading the words one at a time, looking for the first word in the pair. Once we have found an instance of the first word, we begin a second search at the found word's location, looking for the second signpost in the pair.
+
+It is here that we deploy our heuristics. The first heuristic concerns so called ``strong stops''. Although they are inserted by the editors, ``strong stops'' have been found to do a good job of determining where punctuation should actually go in ancient texts \cite{strongstop}. Because we do not expect signposts to span sentences, we do not look beyond ``strong stops'' when trying to find the second word of the pair. For our purposes, the ``strong stops'' conservatively only include the period and the colon; it is possible that a semicolon might be inserted reasonably between two signposted clauses.
+
+The second heuristic we use is related to clause length: we only consider signposts that have at most eight other words between them. This limit was chosen somewhat arbitrarily, but when testing our implementation we discovered that it was sufficient in practice. To ensure the correctness of our program we tested against an index of Pliny \cite{index}, and a limit of eight removed all false negatives while minimizing false positives.
+
+\subsection{Choice of Inputs}
+
+We chose the following list of signposts to test, which we divide into two categories: the signposts that consist of two different words and the signposts that consist of the same word repeated multiple times. The different words:
+
+\begin(itemize)
+  \item cum, tum
+  \item quidem, tamen
+  \item ut, sic
+  \item ut, ita
+  \item quidem, sed
+  \item tam, ut
+  \item ita, ut
+  \item adeo, ut
+\end(itemize)
+
+We also used the following words, repeated twice:
+
+\begin(itemize)
+  \item et, et
+  \item vel, vel
+  \item aut, aut
+\end(itemize)
+
+We looked for these signposts in the following works:
+
+\begin(itemize)
+  \item Pliny's \textit{Epistulae}
+  \item Cicero's \textit{Epistulae ad Familiares} and \textit{Epistulae ad Atticum}
+  \item Seneca's \textit{Epistulae}
+  \item Caesar's \textit{Bella Gallica}
+  \item Tacitus' \textit{Agricola}
+\end(itemize)
