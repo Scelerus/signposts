@@ -3,7 +3,7 @@ let debug = ref true
 (* this next section contains all the parameters that can be set.
    Most of these concern the heuristics being employed *)
 
-let signposts = [("ut","sic")]
+let signposts = [("cum","tum")]
 (* [("ut","sic"); ("et","et"); ("cum","tum"); ("velut", "sic")]*)
 
 let max_words_between_signposts = 8
