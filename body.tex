@@ -2,6 +2,7 @@
     
 
 \section{Introduction}
+\label{sec:Intro}
 
 The letters of Gauis Plinius Caecilius Secundus, more commonly known as Pliny the Younger, are often read by students of Latin.  It has been claimed \cite{Woodmanpm} that Pliny's letters are easier to read than comparable Latin texts due to Pliny favoring so called ``signpost'' words, which provide useful markers for the beginning reader. The primary goal of this paper is to determine whether this claim is, in fact, true.
 
@@ -12,6 +13,7 @@ Nevertheless, this paper endeavors to determine whether Pliny's prose includes m
 After data is collected, statistical methods are applied to determine whether the ``signpost'' words occur more or less frequently in different authors. The statistical methodology is discussed in Section 4. The results of the analysis are reported in Section 5 and discussed in Section 6. Section 7 discusses related work, Section 8 discusses threats to the validity of our approach, Section 9 discusses possible future work, and the paper concludes in Section 10.
 
 \section{The Program}
+\label{sec:The Program}
 
 In order to determine how many times each of the signposts we consider is used in the texts considered, we use a simple computer program that operates over the text in question. The algorithm is straightforward, but it does rely on two major heuristics and a few other small assumptions.
 
@@ -25,29 +27,9 @@ The second heuristic we use is related to clause length: we only consider signpo
 
 \subsection{Choice of Inputs}
 
-We chose the following list of signposts to test, which we divide into two categories: the signposts that consist of two different words and the signposts that consist of the same word repeated multiple times. The different words:
-
-\begin{itemize}
-  \item cum, tum
-  \item quidem, tamen
-  \item ut, sic
-  \item ut, ita
-  \item quidem, sed
-  \item tam, ut
-  \item ita, ut
-  \item adeo, ut
-\end{itemize}
-
-We also used the following words, repeated twice:
-
-\begin{itemize}
-  \item et, et
-  \item vel, vel
-  \item aut, aut
-\end{itemize}
+We chose the following list of signposts to test, which we divide into two categories: the signposts that consist of two different words and the signposts that consist of the same word repeated multiple times. The different words: cum, tum; quidem, tamen; ut, sic; ut, ita; quidem, sed; tam, ut; ita, ut; adeo, ut. We also used the following words, repeated twice: et, vel, and aut.
 
 We looked for these signposts in the following works:
-
 \begin{itemize}
   \item Pliny's \textit{Epistulae}
   \item Cicero's \textit{Epistulae ad Familiares} and \textit{Epistulae ad Atticum}
@@ -55,3 +37,31 @@ We looked for these signposts in the following works:
   \item Caesar's \textit{Bella Gallica}
   \item Tacitus' \textit{Agricola}
 \end{itemize}
+
+A few brief words on the choice of texts: Pliny is here since that is the text of interest. Cicero and Seneca are the authors of the other two large, extant collections of letters, and so they were selected as well. Tacitus is contemporary with Pliny, and so is selected to control for changes in the language that might make signposting more common. Finally, Caesar is chosen because the \textit{Bella Gallica} is generally regarded as an easier, introductory Latin text. Since we hypothesize that signposts make Latin easier to read, comparing with an ``easier'' text makes sense.
+
+The results of the analysis can be found in Figure \ref{fig:results}. Each column of the figure represents an author, and each row represents either the total word count of the document (``Word Count'') or the number of times a particular signpost pair was found.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{tabular}{| l || c | c | c | c | c |}
+      \hline
+      & Pliny & Seneca & Cicero & Caesar & Tacitus \\ \hline \hline
+      Word Count & 69896 & 122281 & 17140 & 54349 & 6842 \\ \hline
+      cum, tum & 23 & 2 & 14 & 9 & 0 \\ \hline
+      quidem, tamen & 19 & 9 & 1 & 1 & 0 \\ \hline
+      ut, sic & 24 & 13 & 1 & 1 & 1 \\ \hline
+      ut, ita & 39 & 33 & 3 & 6 & 5 \\ \hline
+      quidem, sed & 18 & 46 & 2 & 3 & 1 \\ \hline
+      tam, ut & 46 & 31 & 4 & 3 & 1 \\ \hline
+      ita, ut & 53 & 25 & 23 & 10 & 3 \\ \hline
+      adeo, ut & 14 & 17 & 1 & 4 & 1 \\ \hline
+      et, et & 389 & 653 & 124 & 174 & 48 \\ \hline
+      vel, vel & 59 & 16 & 5 & 4 & 1 \\ \hline
+      aut, aut & 79 & 144 & 19 & 55 & 9 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption{\label{fig:results}This table contains the raw results obtained by running the algorithm described in section \ref{sec:The Program}.}
+\end{figure}
+
