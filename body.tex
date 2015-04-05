@@ -8,9 +8,9 @@ The letters of Gauis Plinius Caecilius Secundus, more commonly known as Pliny th
 
 ``Signpost'' words come in pairs: first one introduces some grammatical structure, such as a clause or phrase, then the other introduces another parallel structure. Common examples of this pattern include ``ut'' and ``sic'' - ``just as x, in the same way y'' or ``cum'' and ``tum'' - ``both x and y''. These words are often learned early in a student's Latin career, and, it is assumed, allow the student to break up the sentence into its constituent parts. This paper assumes that a higher frequency of ``signpost'' words does, in fact, lead to more easily read Latin for the beginner; however, this assumption may be false (see \ref{sec:Threats to Validity}).
 
-Nevertheless, this paper endeavors to determine whether Pliny's prose includes more of these ``signpost'' words than the prose of other similar authors. In order to discover this, a computer analysis of the texts of both Pliny's epistles and other Roman writers (including Cicero, Seneca, Caesar, and Tacitus) is used. This analysis searches through the text and finds pairs of coordinated ``signpost'' words. We discuss this analysis in Section 3.
+Nevertheless, this paper endeavors to determine whether Pliny's prose includes more of these ``signpost'' words than the prose of other similar authors. In order to discover this, a computer analysis of the texts of both Pliny's epistles and other Roman writers (including Cicero, Seneca, Caesar, and Tacitus) is used. This analysis searches through the text and finds pairs of coordinated ``signpost'' words. We discuss this analysis in Section \ref{sec:The Program}.
  
-After data is collected, statistical methods are applied to determine whether the ``signpost'' words occur more or less frequently in different authors. The statistical methodology is discussed in Section 4. The results of the analysis are reported in Section 5 and discussed in Section 6. Section 7 discusses related work, Section 8 discusses threats to the validity of our approach, Section 9 discusses possible future work, and the paper concludes in Section 10.
+After data is collected, statistical methods are applied to determine whether the ``signpost'' words occur more or less frequently in different authors. The statistical methodology is discussed in Section \ref{sec:stats}. The results of the statistical analysis are discussed in Section \ref{sec:discuss}. Section \ref{sec:related} discusses related work, Section \ref{sec:Threats to Validity} discusses threats to the validity of our approach, Section \ref{sec:Future} discusses possible future work, and the paper concludes in Section \ref{sec:conclusion}.
 
 \section{The Program}
 \label{sec:The Program}
@@ -47,7 +47,7 @@ The results of the analysis can be found in Figure \ref{fig:results}. Each colum
     \begin{tabular}{| l || c | c | c | c | c |}
       \hline
       & Pliny & Seneca & Cicero & Caesar & Tacitus \\ \hline \hline
-      Word Count & 69896 & 122281 & 17140 & 54349 & 6842 \\ \hline
+      Word Count & 69896 & 122281 & 17140 & 54349 & 6842 \\ \hline \hline
       cum, tum & 23 & 2 & 14 & 9 & 0 \\ \hline
       quidem, tamen & 19 & 9 & 1 & 1 & 0 \\ \hline
       ut, sic & 24 & 13 & 1 & 1 & 1 \\ \hline
@@ -55,13 +55,43 @@ The results of the analysis can be found in Figure \ref{fig:results}. Each colum
       quidem, sed & 18 & 46 & 2 & 3 & 1 \\ \hline
       tam, ut & 46 & 31 & 4 & 3 & 1 \\ \hline
       ita, ut & 53 & 25 & 23 & 10 & 3 \\ \hline
-      adeo, ut & 14 & 17 & 1 & 4 & 1 \\ \hline
+      adeo, ut & 14 & 17 & 1 & 4 & 1 \\ \hline \hline
+      total, non-repeat & 236 & 176 & 49 & 37 & 12 \\ \hline \hline
       et, et & 389 & 653 & 124 & 174 & 48 \\ \hline
       vel, vel & 59 & 16 & 5 & 4 & 1 \\ \hline
-      aut, aut & 79 & 144 & 19 & 55 & 9 \\
+      aut, aut & 79 & 144 & 19 & 55 & 9 \\ \hline \hline
+      total, repeat & 527 & 813 & 148 & 233 & 58 \\ \hline \hline
+      total & 763 & 989 & 197 & 270 & 70 \\
       \hline
     \end{tabular}
   \end{center}
   \caption{\label{fig:results}This table contains the raw results obtained by running the algorithm described in section \ref{sec:The Program}.}
 \end{figure}
 
+\section{Statistical Methodology}
+\label{sec:stats}
+
+A cursory examination of figure \ref{fig:results} does not yield a lot of useful information. Especially due to the tremendous differences in the sizes of the texts (Seneca's letters have nearly 200 words for every one in the \textit{Agricola}!), it is necessary to control for the size of the texts when comparing the results. We also want to be able to have empirical confidence in our results. In order to attain these goals, we use an hypothesis testing scheme between population. We compare each text with Pliny's \textit{Epistulae}, testing each time whether the proportions of the words in each text that are signposts are equal. Since we expect Pliny to contain more signposts \cite{Woodmanpm}, we use an upper-sided test. This means that our null hypothesis for each pair of texts is that the frequency of signposts is the same, and that our alternate hypothesis is that Pliny has a higher frequency of signposts.
+
+We perform a test of this kind on two different pieces of our data: the total number of signposts in each text and the total number of ``non-repeat'' signposts (i.e. those signposts which do not consist of the same word repeated twice). Although the individual numbers of each signpost are interesting, we chose to test these two particular numbers because they encompass all the information we wish to consider and they will provide us with an answer to our original research question, which asked whether Pliny used more signposts than similar writers. Originally, we intended only to use the totals, but after seeing how many more ``repeat'' signposts there were (consider that ``et...et'' appeared in Seneca nearly twice as often as all the other signposts combined) we felt that it would be prudent to test both. Consider further that all three of the ``repeat'' signposts under test here are often just used in lists of things, which are usually somewhat uninteresting grammatically.
+
+We therefore run upper-sided tests between each population and Pliny, and report the results in figure \ref{fig:stats}. We report the $p$ value we found between each of the populations for each test, which indicates the probability that we made a ``type I error'', which would indicate that we had chosen to reject the null hypothesis (thus suggesting that Pliny \textit{did} contain more signposts) when in fact we should have failed to reject it (which is to say that the $p$ value represents the probability that we thought Pliny contained more signposts when he did not). It is generally agreed that a $p$ value below 0.05 is substantial evidence for the alternate hypothesis. This means that in figure \ref{fig:stats}, we can conclude that Pliny has more signposts than another author when the $p$ value between those two authors is less than 0.05.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{tabular}{| l | c | c | c |}
+      \hline
+      Pair of Authors & Non-repeat or total & $p$ value & Reject? \\ \hline \hline
+      Pliny and Seneca & Total & $p \ll 0.0001$ & Yes \\ \hline
+      Pliny and Seneca & Non-repeat & $p \ll 0.0001$ & Yes \\ \hline
+      Pliny and Cicero & Total & $p \approx 0.7389$ & No \\ \hline
+      Pliny and Cicero & Non-repeat & $p \approx 0.1446$ & No \\ \hline
+      Pliny and Caesar & Total & $p \ll 0.0001$ & Yes \\ \hline
+      Pliny and Caesar & Non-repeat & $p \ll 0.0001$ & Yes \\ \hline
+      Pliny and Tacitus & Total & $p \approx 0.3015$ & No \\ \hline
+      Pliny and Seneca & Non-repeat & $p \approx 0.0119$ & Yes \\      
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption{\label{fig:stats}The results of the statistical analysis desrcibed in section \ref{sec:stats}.}
+\end{figure}
