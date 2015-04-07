@@ -3,10 +3,9 @@ let debug = ref true
 (* this next section contains all the parameters that can be set.
    Most of these concern the heuristics being employed *)
 
-let signposts = [("cum","tum")]
-(* [("ut","sic"); ("et","et"); ("cum","tum"); ("velut", "sic")]*)
+let signposts = [ ("cum","tum"); ("et","et"); ("ut","sic"); ("ut", "ita"); ("quidem","tamen"); ("quidem", "sed"); ("vel","vel"); ("aut", "aut");  ("tam", "ut"); ("ita", "ut"); ("adeo", "ut")]
 
-let max_words_between_signposts = 8
+let max_words_between_signposts = 12
 
 let fFullStops = true
 
@@ -70,7 +69,7 @@ let main () =
 		    if counter > max_words_between_signposts then words_left else begin
 
 		    if hd = snd 
-		    then begin Printf.printf "Found %s, %s pair in %s\n" fst snd !cur_letter; remove_word hd words_left 
+		    then begin Printf.printf "Found %s, %s pair\n" fst snd; remove_word hd words_left 
 		    end else (* check for full stops *)
 		      if fFullStops && (contains hd "." || contains hd ":") then words_left
 		      else look_through_words tl fst snd false (counter + 1) words_left

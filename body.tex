@@ -15,7 +15,7 @@ After data is collected, statistical methods are applied to determine whether th
 \section{The Program}
 \label{sec:The Program}
 
-In order to determine how many times each of the signposts we consider is used in the texts considered, we use a simple computer program that operates over the text in question. The algorithm is straightforward, but it does rely on two major heuristics and a few other small assumptions.
+In order to determine how many times each of the signposts we consider is used in the texts considered, we use a simple computer program that operates over the text in question. The algorithm is straightforward, but it does rely on two major heuristics and a few other small assumptions. The source code for the algorithm about to be described, along with instructions on how to use it and the inputs used, are available at \cite{github}.
 
 \subsection{Description of Algorithm}
 
@@ -36,48 +36,84 @@ We looked for these signposts in the following works:
   \item Seneca's \textit{Epistulae}
   \item Caesar's \textit{Bella Gallica}
   \item Tacitus' \textit{Agricola}
+  \item Tacitus' \textit{Historiae}
 \end{itemize}
 
-A few brief words on the choice of texts: Pliny is here since that is the text of interest. Cicero and Seneca are the authors of the other two large, extant collections of letters, and so they were selected as well. Tacitus is contemporary with Pliny, and so is selected to control for changes in the language that might make signposting more common. Finally, Caesar is chosen because the \textit{Bella Gallica} is generally regarded as an easier, introductory Latin text. Since we hypothesize that signposts make Latin easier to read, comparing with an ``easier'' text makes sense.
+A few brief words on the choice of texts: Pliny is here since that is the text of interest. Cicero and Seneca are the authors of the other two large, extant collections of letters, and so they were selected as well. Tacitus is contemporary with Pliny, and so is selected to control for changes in the language that might make signposting more common. Originally, we used only the \textit{Agricola}, but during the statistical analysis we discovered that it was too small for an effective sample. Therefore, we added Tacitus' \textit{Historiae} as an additional contemporary. We leave the numbers for the \textit{Agricola} for completeness. Finally, Caesar is chosen because the \textit{Bella Gallica} is generally regarded as an easier, introductory Latin text. Since we hypothesize that signposts make Latin easier to read, comparing with an ``easier'' text makes sense.
 
 The results of the analysis can be found in Figure \ref{fig:results}. Each column of the figure represents an author, and each row represents either the total word count of the document (``Word Count'') or the number of times a particular signpost pair was found.
 
-\begin{figure}[h]
+\begin{figure*}[t]
   \begin{center}
-    \begin{tabular}{| l || c | c | c | c | c |}
+    \begin{tabular}{| l || c | c | c | c | c | c |}
       \hline
-      & Pliny & Seneca & Cicero & Caesar & Tacitus \\ \hline \hline
-      Word Count & 69896 & 122281 & 17140 & 54349 & 6842 \\ \hline \hline
-      cum, tum & 23 & 2 & 14 & 9 & 0 \\ \hline
-      quidem, tamen & 19 & 9 & 1 & 1 & 0 \\ \hline
-      ut, sic & 24 & 13 & 1 & 1 & 1 \\ \hline
-      ut, ita & 39 & 33 & 3 & 6 & 5 \\ \hline
-      quidem, sed & 18 & 46 & 2 & 3 & 1 \\ \hline
-      tam, ut & 46 & 31 & 4 & 3 & 1 \\ \hline
-      ita, ut & 53 & 25 & 23 & 10 & 3 \\ \hline
-      adeo, ut & 14 & 17 & 1 & 4 & 1 \\ \hline \hline
-      total, non-repeat & 236 & 176 & 49 & 37 & 12 \\ \hline \hline
-      et, et & 389 & 653 & 124 & 174 & 48 \\ \hline
-      vel, vel & 59 & 16 & 5 & 4 & 1 \\ \hline
-      aut, aut & 79 & 144 & 19 & 55 & 9 \\ \hline \hline
-      total, repeat & 527 & 813 & 148 & 233 & 58 \\ \hline \hline
-      total & 763 & 989 & 197 & 270 & 70 \\
+      & Pliny & Seneca & Cicero & Caesar & \textit{Agricola} & \textit{Historiae}  \\ \hline \hline
+      Word Count & 69896 & 122281 & 17140 & 54349 & 6842 & 51845 \\ \hline \hline
+      cum, tum & 23 & 2 & 14 & 9 & 0 & 0 \\ \hline
+      quidem, tamen & 19 & 9 & 1 & 1 & 0 & 0 \\ \hline
+      ut, sic & 24 & 13 & 1 & 1 & 1 & 0 \\ \hline
+      ut, ita & 39 & 33 & 3 & 6 & 5 & 18 \\ \hline
+      quidem, sed & 18 & 46 & 2 & 3 & 1 & 7 \\ \hline
+      tam, ut & 46 & 31 & 4 & 3 & 1 & 4 \\ \hline
+      ita, ut & 53 & 25 & 23 & 10 & 3 & 14 \\ \hline
+      adeo, ut & 14 & 17 & 1 & 4 & 1 & 12 \\ \hline \hline
+      total, non-repeat & 236 & 176 & 49 & 37 & 12 & 81 \\ \hline \hline
+      et, et & 389 & 653 & 124 & 174 & 48 & 257 \\ \hline
+      vel, vel & 59 & 16 & 5 & 4 & 1 & 3 \\ \hline
+      aut, aut & 79 & 144 & 19 & 55 & 9 & 22 \\ \hline \hline
+      total, repeat & 527 & 813 & 148 & 233 & 58 & 282 \\ \hline \hline
+      total & 763 & 989 & 197 & 270 & 70 & 363 \\
       \hline
     \end{tabular}
   \end{center}
   \caption{\label{fig:results}This table contains the raw results obtained by running the algorithm described in section \ref{sec:The Program}.}
+\end{figure*}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{cumtum.png}
 \end{figure}
 
-\section{Statistical Methodology}
-\label{sec:stats}
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{quidemtamen.png}
+\end{figure}
 
-A cursory examination of figure \ref{fig:results} does not yield a lot of useful information. Especially due to the tremendous differences in the sizes of the texts (Seneca's letters have nearly 200 words for every one in the \textit{Agricola}!), it is necessary to control for the size of the texts when comparing the results. We also want to be able to have empirical confidence in our results. In order to attain these goals, we use an hypothesis testing scheme between population. We compare each text with Pliny's \textit{Epistulae}, testing each time whether the proportions of the words in each text that are signposts are equal. Since we expect Pliny to contain more signposts \cite{Woodmanpm}, we use an upper-sided test. This means that our null hypothesis for each pair of texts is that the frequency of signposts is the same, and that our alternate hypothesis is that Pliny has a higher frequency of signposts.
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{utsic.png}
+\end{figure}
 
-We perform a test of this kind on two different pieces of our data: the total number of signposts in each text and the total number of ``non-repeat'' signposts (i.e. those signposts which do not consist of the same word repeated twice). Although the individual numbers of each signpost are interesting, we chose to test these two particular numbers because they encompass all the information we wish to consider and they will provide us with an answer to our original research question, which asked whether Pliny used more signposts than similar writers. Originally, we intended only to use the totals, but after seeing how many more ``repeat'' signposts there were (consider that ``et...et'' appeared in Seneca nearly twice as often as all the other signposts combined) we felt that it would be prudent to test both. Consider further that all three of the ``repeat'' signposts under test here are often just used in lists of things, which are usually somewhat uninteresting grammatically.
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{utita.png}
+\end{figure}
 
-We therefore run upper-sided tests between each population and Pliny, and report the results in figure \ref{fig:stats}. We report the $p$ value we found between each of the populations for each test, which indicates the probability that we made a ``type I error'', which would indicate that we had chosen to reject the null hypothesis (thus suggesting that Pliny \textit{did} contain more signposts) when in fact we should have failed to reject it (which is to say that the $p$ value represents the probability that we thought Pliny contained more signposts when he did not). It is generally agreed that a $p$ value below 0.05 is substantial evidence for the alternate hypothesis. This means that in figure \ref{fig:stats}, we can conclude that Pliny has more signposts than another author when the $p$ value between those two authors is less than 0.05.
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{quidemsed.png}
+\end{figure}
 
-\begin{figure}[h]
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{tamut.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{itaut.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{adeout.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{etet.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{velvel.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{autaut.png}
+\end{figure}
+
+\begin{figure*}[t]
   \begin{center}
     \begin{tabular}{| l | c | c | c |}
       \hline
@@ -88,10 +124,34 @@ We therefore run upper-sided tests between each population and Pliny, and report
       Pliny and Cicero & Non-repeat & $p \approx 0.1446$ & No \\ \hline
       Pliny and Caesar & Total & $p \ll 0.0001$ & Yes \\ \hline
       Pliny and Caesar & Non-repeat & $p \ll 0.0001$ & Yes \\ \hline
-      Pliny and Tacitus & Total & $p \approx 0.3015$ & No \\ \hline
-      Pliny and Seneca & Non-repeat & $p \approx 0.0119$ & Yes \\      
+      Pliny and Tacitus's \textit{Agricola} & Total & $p \approx 0.3015$ & No \\ \hline
+      Pliny and Tacitus's \textit{Agricola} & Non-repeat & $p \approx 0.0119$ & Yes \\ \hline
+      Pliny and Tacitus's \textit{Historiae} & Total & $p \ll 0.0001$ & Yes \\ \hline
+      Pliny and Tacitus's \textit{Historiae} & Non-repeat & $p \ll 0.0001$ & Yes \\      
       \hline
     \end{tabular}
   \end{center}
   \caption{\label{fig:stats}The results of the statistical analysis desrcibed in section \ref{sec:stats}.}
-\end{figure}
+\end{figure*}
+
+\section{Statistical Methodology}
+\label{sec:stats}
+
+A cursory examination of figure \ref{fig:results} does not yield a lot of useful information. Especially due to the tremendous differences in the sizes of the texts (Seneca's letters have nearly 200 words for every one in the \textit{Agricola}!), it is necessary to control for the size of the texts when comparing the results. We also want to be able to have empirical confidence in our results. In order to attain these goals, we use an hypothesis testing scheme between population. We compare each text with Pliny's \textit{Epistulae}, testing each time whether the proportions of the words in each text that are signposts are equal. Since we expect Pliny to contain more signposts \cite{Woodmanpm}, we use an upper-sided test. This means that our null hypothesis for each pair of texts is that the frequency of signposts is the same, and that our alternate hypothesis is that Pliny has a higher frequency of signposts.
+
+We perform a test of this kind on two different pieces of our data: the total number of signposts in each text and the total number of ``non-repeat'' signposts (i.e. those signposts which do not consist of the same word repeated twice). Although the individual numbers of each signpost are interesting, we chose to test these two particular numbers because they encompass all the information we wish to consider and they will provide us with an answer to our original research question, which asked whether Pliny used more signposts than similar writers. Originally, we intended only to use the totals, but after seeing how many more ``repeat'' signposts there were (consider that ``et...et'' appeared in Seneca nearly twice as often as all the other signposts combined) we felt that it would be prudent to test both. Consider further that all three of the ``repeat'' signposts under test here are often just used in lists of things, which are usually somewhat uninteresting grammatically.
+
+We therefore run upper-sided tests between each population and Pliny, and report the results in figure \ref{fig:stats}. We report the $p$ value we found between each of the populations for each test, which indicates the probability that we made a ``type I error'', which would indicate that we had chosen to reject the null hypothesis (thus suggesting that Pliny \textit{did} contain more signposts) when in fact we should have failed to reject it (which is to say that the $p$ value represents the probability that we thought Pliny contained more signposts when he did not). It is generally agreed that a $p$ value below 0.05 is substantial evidence for the alternate hypothesis. This means that in figure \ref{fig:stats}, we can conclude that Pliny has more signposts than another author when the $p$ value between those two authors is less than 0.05. Sometimes we know that the $p$ value is very small, so we do not bother to calculate its actual value. In these cases, we say that $p \ll 0.0001$, which means that $p$ is much smaller than $0.0001$. In these cases we always reject the null hypothesis.
+
+\section{Discussion}
+\label{sec:discuss}
+
+The results in figure \ref{fig:stats} show that Pliny does, in fact, use fewer signposts than many of the other authors to which he is compared. In particular, Pliny uses many, many more signposts than either Seneca or Caesar, which seems to support our original claim that Pliny used an unusually large number of signposts.
+
+However, when Pliny is compared to a contemporary, his friend Tacitus, the results are more mixed. When comparing the total number of signposts in the \textit{Agricola}, it appears as if, although Pliny uses a slightly higher proportion of signposts than Tacitus, the numbers are close enough that it's difficult to be confident that the difference is not due to random variation. When we only compare using the non-repeated signposts, on the other hand, we can be reasonably confident that Pliny is in fact using more. These uncertainties, however, are probably due more to the small sample size of the \textit{Agricola}. Because it is so much shorter than the corpus of Pliny to which it is being compared, and the frequency of individual signposts among the total number of words is quite low (even when signposts are very common, they still make up a very small percentage of the whole text), our statistical test cannot give us too high a level of confidence. 
+
+Instead, we can look at the \textit{Historiae}, a more significant work by Tacitus. When we compare this work to Pliny's letters, we can conclude firmly that the larger proportion of signposts in Pliny's work is statistically significant. Unsurprisingly, when we combine all of Tacitus' work under consideration, we get similar results to just the \textit{Historiae}, most likely due to the domination of the larger sample. From this, we can safely decide that Pliny is also using more signposts than Tacitus.
+
+Finally, this leaves the case of Cicero's \textit{Epistulae}. Not only can we not conclude that Cicero's letters use fewer signposts than Pliny, $p$ values greater than 0.5 indicate that Cicero may actually use signposts \textit{more} than Pliny. A test of this (essentially running the same test between Pliny and Cicero in reverse, to see if we have convincing evidence that Cicero uses more signposts than Pliny) also is inconclusive. Since we do not have strong evidence that either uses more signposts than the other, we are justified in concluding that both letter-writers use signposts equally often. 
+
+Moreover, Pliny is thought to have held Cicero in the highest regard \cite{plinycicero1} \cite{plinycicero2}. Not only were both politicians and lawyers, but also both released books of letters for publication; it is natural that we should expect the two to be similar. It is no surprise, then, that the two cannot be differentiated on the basis of signposting. To see to what degree Pliny might be modelling his letters on those of Cicero (as opposed to Cicero as a whole), we also conducted a test of the kind described above on some of Cicero's speeches against Cataline. These speeches contained much less frequent use of signposts than any of Cicero's letters. Perhaps, then, signposting is a trademark of epistolary writings? A quick glance at our results for Seneca's books of letters show that this is not the case. Rather, then, the similarity between Pliny and Cicero seems to provide further evidence for the claim that Pliny was explicitly modelling himself on Cicero. All told, Cicero and Pliny seem to stand out from the rest of the considered authors in their use of signposting.
