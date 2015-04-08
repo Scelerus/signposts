@@ -10,7 +10,7 @@ clean:
 	rm *~
 
 pdf:
-	pdflatex main.tex
-	bibtex main.aux
-	pdflatex main.tex
-	pdflatex main.tex
+	pdflatex plinysignposts.tex
+	bibtex plinysignposts.aux
+	pdflatex plinysignposts.tex
+	pdflatex plinysignposts.tex
